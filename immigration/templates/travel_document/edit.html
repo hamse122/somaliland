@@ -1,0 +1,171 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-header">
+    <h1>REPUBLIC OF SOMALILAND</h1>
+    <h2>Immigration Travel Document</h2>
+    <p><strong>XAFIISKA GOBOLKA M/JEEX</strong> date: {% if form.date.value %}{{ form.date.value }}{% else %}-{% endif %}</p>
+    <h3>FOOMKA JOGGITAANKA</h3>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-section">
+                <table class="form-table">
+                    <tr>
+                        <td><strong>Magaca oo Afaran</strong></td>
+                        <td>{{ form.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Magaca Hooyada</strong></td>
+                        <td>{{ form.mother_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tariikhda Dhalasho</strong></td>
+                        <td>{{ form.birth_date }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Goobta Dhalasho</strong></td>
+                        <td>{{ form.birth_place }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agoonsi Lambar</strong></td>
+                        <td>{{ form.identification_number }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gobolka</strong></td>
+                        <td>{{ form.region }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>M/Goobta Shago</strong></td>
+                        <td>{{ form.workplace }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Magaca Wakitika</strong></td>
+                        <td>{{ form.sponsor_name }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-section">
+                <table class="form-table">
+                    <tr>
+                        <td><strong>Card-ka Muwadinka</strong></td>
+                        <td>{{ form.citizen_card }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Telphone Lambar</strong></td>
+                        <td>{{ form.phone_number }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jinsiyadda</strong></td>
+                        <td>{{ form.nationality }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Degmada</strong></td>
+                        <td>{{ form.district }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nooca Shago</strong></td>
+                        <td>{{ form.job_type }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Litsan Lambar</strong></td>
+                        <td>{{ form.license_number }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contact Number</strong></td>
+                        <td>{{ form.contact_number }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">Magaca Ku-tirsanayasha Ka Yar 14 Jir</div>
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Magaca</th>
+                    <th>T/Dhalashada</th>
+                    <th>G/Dhalashada</th>
+                    <th>Photo</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ formset.management_form }}
+                {% for child_form in formset %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ child_form.name }}</td>
+                    <td>{{ child_form.birth_date }}</td>
+                    <td>{{ child_form.birth_place }}</td>
+                    <td>
+                        {% if child_form.instance.photo %}
+                        <img src="{{ child_form.instance.photo.url }}" width="50" height="50">
+                        {% endif %}
+                        {{ child_form.photo }}
+                    </td>
+                    <td>
+                        {% if child_form.instance.pk %}
+                        {{ child_form.DELETE }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">F.G</div>
+        <p>Maclumaadka Formka waa in uu dhamaystimaado.</p>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">Hawadeenka Ciidanka Socdaalka kaliya:</div>
+        <table class="form-table">
+            <tr>
+                <td><strong>Tariikhda la Buuxiyay:</strong></td>
+                <td>{{ form.date }}</td>
+                <td><strong>Noocyada Lifaaayada:</strong></td>
+                <td>{{ form.license_number }}</td>
+            </tr>
+            <tr>
+                <td><strong>Marxalada uu Marayo:</strong></td>
+                <td colspan="3">
+                    {{ form.status }}
+                </td>
+            </tr>
+            <tr>
+                <td><strong>FaahFahin Gaar Ah:</strong></td>
+                <td colspan="3">{{ form.immigration_officer_notes }}</td>
+            </tr>
+            <tr>
+                <td><strong>Card Number:</strong></td>
+                <td>{{ form.card_number }}</td>
+                <td><strong>Signature:</strong></td>
+                <td>{{ form.officer_signature }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>Address: Hargeisa Somaliland, Sha'ab Area</p>
+        <p>Email: info@slimmigration.com</p>
+        <p>Line: 523961 | Web: www.slimmigration.com</p>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'travel_document_detail' form.instance.pk %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+{% endblock %}

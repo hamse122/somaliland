@@ -1,0 +1,16 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Delete Degmada Form</h1>
+
+<p>Are you sure you want to delete this form?</p>
+<p><strong>Reference:</strong> {{ form.reference }}</p>
+<p><strong>Company Name:</strong> {{ form.company_name }}</p>
+<p><strong>Date:</strong> {{ form.date }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'degmada_form_detail' form.pk %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

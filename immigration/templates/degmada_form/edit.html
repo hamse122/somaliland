@@ -1,0 +1,195 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-header">
+    <h1>REPUBLIC OF SOMALILAND</h1>
+    <h2>Form-ka Degmada</h2>
+    <p>REF: {{ form.reference.value|default:"-" }} DATE: {% if form.date.value %}{{ form.date.value }}{% else %}-{% endif %}</p>
+    <p><strong>GOBOLKA:</strong> {{ form.gobolka.value|default:"-" }} <strong>DEGMADA:</strong> {{ form.degmada.value|default:"-" }}</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="form-section">
+        <div class="section-title">A. MAHERADDA (COMPANY, ORGANIZATION)</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Magaca Maheradda</label>
+                    {{ form.company_name }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Lilsanka Maheradda</label>
+                    {{ form.company_license }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Xiliga La'asasay</label>
+                    {{ form.establishment_period }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Shaqalaha ka Hawlgala</label>
+                    {{ form.working_employees }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Gobolka</label>
+                    {{ form.company_region }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Degmada</label>
+                    {{ form.company_district }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">B. WAKILL(SPONSER) SHAGSI</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Magaca</label>
+                    {{ form.sponsor_name }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">ID Number</label>
+                    {{ form.sponsor_id }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Tellphone</label>
+                    {{ form.sponsor_phone }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Contact Number</label>
+                    {{ form.sponsor_contact }}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Address</label>
+            {{ form.sponsor_address }}
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">C. Macluumaadka Dadka La'Ogalaaday</div>
+        <table class="form-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Magaca</th>
+                    <th>Jinsiyadda</th>
+                    <th>T/Dhalasho</th>
+                    <th>Telephone</th>
+                    <th>Photo</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ formset.management_form }}
+                {% for member_form in formset %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ member_form.name }}</td>
+                    <td>{{ member_form.nationality }}</td>
+                    <td>{{ member_form.birth_date }}</td>
+                    <td>{{ member_form.phone }}</td>
+                    <td>
+                        {% if member_form.instance.photo %}
+                        <img src="{{ member_form.instance.photo.url }}" width="50" height="50">
+                        {% endif %}
+                        {{ member_form.photo }}
+                    </td>
+                    <td>
+                        {% if member_form.instance.pk %}
+                        {{ member_form.DELETE }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">Photographs Section</div>
+        <div class="text-center">
+            {% for i in "12345678" %}
+            <div class="photo-box">
+                <div class="photo-label">Photograph 2x2 inch</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">Balan Qaad (Pledge)</div>
+        <p>Anigoo ah milkiilaha / milkiilayaasha maheradda kor ku xusan ee Qodobka (A) waxaan balan qaadaya in dadka ku qoran Qodobka (C) aan mas'uul ka yahay, haddii loo baahdana aan keeni doono xarunta ciidanka socdaalka. Wuxuuna waajib igu yahay in muddo ah lix (6) bilood aan igu diyaar ninyo Basaasnimo, Jidgooyo, Qaxooti, Jiritaan iyo kuwo dhameystiran waayana waxba kama qabto in laga guto waana sharciga ciidanka socdaalka.</p>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Magaca iyo Saxeexa Balan Qaadaha</label>
+                    {{ form.pledge_name }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Signature</label>
+                    {{ form.pledge_signature }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="section-title">Hawadeenka Ciidanka Socdaalka kaliya:</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Tariikhda la Buuxiyay</label>
+                    {{ form.filled_date }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label class="form-label">Noocyada Lifaaqyada:</label>
+                    {{ form.attachment_types }}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Faahfaahin Gaar Ah:</label>
+            {{ form.special_notes }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Magaca iyo Saxeexa Taliyaha Degmada:</label>
+            {{ form.district_leader_name }}
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Signature</label>
+            {{ form.district_leader_signature }}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Address: Hargeisa Somaliland, Sha'ab Area</p>
+        <p>Email: info@slimmigration.com</p>
+        <p>Line: 523961 | Web: www.slimmigration.com</p>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'degmada_form_detail' form.instance.pk %}" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,427 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    body {
+        font-family: "Times New Roman", serif;
+        margin: 0;
+        padding: 0;
+        font-size: 12pt;
+        line-height: 1.4;
+        color: #000;
+        background-color: #fff;
+    }
+
+    .form-container {
+        width: 1200px;
+        min-height: 297mm;
+        margin: 0 auto;
+        padding: 15mm;
+        position: relative;
+        box-sizing: border-box;
+        background-color: #fff;
+        border: 1px solid #ccc;
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+    }
+
+    .form-header h1 {
+        font-size: 18pt;
+        font-weight: bold;
+        margin: 5px 0;
+        text-transform: uppercase;
+    }
+
+    .form-header h2 {
+        font-size: 16pt;
+        font-weight: bold;
+        margin: 5px 0;
+    }
+
+    .form-header p {
+        margin: 3px 0;
+        font-size: 12pt;
+    }
+
+    .section-title {
+        font-size: 14pt;
+        font-weight: bold;
+        margin: 15px 0 10px 0;
+        border-bottom: 1px solid #000;
+        padding-bottom: 3px;
+    }
+
+    .form-section {
+        margin-bottom: 15px;
+    }
+
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+        border: 1px solid #000;
+    }
+
+    .form-table th,
+    .form-table td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .form-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 10pt;
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid #000;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 5px;
+        border: none;
+        background-color: transparent;
+        font-family: "Times New Roman", serif;
+        font-size: 12pt;
+        border-bottom: 1px dotted #666;
+    }
+
+    .form-control:focus {
+        outline: none;
+        background-color: #f8f8f8;
+    }
+
+    .btn-container {
+        text-align: center;
+        margin-top: 25px;
+    }
+
+    .btn {
+        padding: 8px 20px;
+        font-size: 12pt;
+        margin: 0 10px;
+        border: 1px solid #000;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+        background-color: #006b4d;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #005a43;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .add-member-btn {
+        background-color: #006b4d;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        font-size: 12pt;
+        margin-bottom: 10px;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+    .add-member-btn:hover {
+        background-color: #005a43;
+    }
+
+    .remove-member-btn {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 3px 6px;
+        font-size: 10pt;
+        cursor: pointer;
+        border-radius: 2px;
+    }
+
+    .remove-member-btn:hover {
+        background-color: #c82333;
+    }
+
+    .watermark {
+        position: absolute;
+        opacity: 0.1;
+        font-size: 120pt;
+        font-weight: bold;
+        color: #006b4d;
+        transform: rotate(-45deg);
+        left: 50px;
+        top: 300px;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    select.form-control {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: transparent;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 5px center;
+        background-size: 12px;
+        padding-right: 25px;
+    }
+
+    .current-date {
+        font-weight: bold;
+    }
+
+    .official-stamp {
+        float: right;
+        width: 100px;
+        height: 100px;
+        border: 1px solid #000;
+        text-align: center;
+        padding: 5px;
+        font-size: 10pt;
+        margin-left: 10px;
+    }
+
+    .signature-line {
+        border-bottom: 1px solid #000;
+        width: 200px;
+        display: inline-block;
+        margin-top: 30px;
+    }
+
+    .signature-label {
+        font-size: 10pt;
+        text-align: center;
+        display: block;
+    }
+</style>
+
+<div class="form-container">
+    <div class="watermark">2025</div>
+    <div class="form-header">
+        <h1>JAMHURIYADDA SOMALILAND</h1>
+        <h1>REPUBLIC OF SOMALILAND</h1>
+        <h2>FORM-KA KAFIILKA</h2>
+        <p>
+            <strong>REF:</strong>
+            <input type="text" name="reference" class="form-control" style="width: 100px; display: inline;"
+                value="{{ form.reference.value|default:'' }}" placeholder="Enter REF">
+            &nbsp;&nbsp;&nbsp;
+            <strong>DATE:</strong> <span class="current-date">{% now "d/m/Y" %}</span>
+        </p>
+        <p>
+            <strong>GOBOLKA:</strong> {{ form.gobolka.value|default:"________" }}
+            &nbsp;&nbsp;&nbsp;
+            <strong>DEGMADA:</strong> {{ form.degmada.value|default:"________" }}
+        </p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" id="kafiilka-form">
+        {% csrf_token %}
+
+        <div class="form-section">
+            <div class="section-title">A. MAHERADDA (COMPANY, ORGANIZATION)</div>
+            <table class="form-table">
+                <tr>
+                    <td width="30%"><strong>Magaca Maheradda</strong></td>
+                    <td>{{ form.company_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Litsanka Maheradda</strong></td>
+                    <td>{{ form.company_license }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Xiliga La'asasay</strong></td>
+                    <td>{{ form.establishment_period }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Shaqalaha ka Hawlgala</strong></td>
+                    <td>{{ form.working_employees }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Gobolka</strong></td>
+                    <td>{{ form.company_region }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Degmada</strong></td>
+                    <td>{{ form.company_district }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">B. WAKILI (SPONSER)</div>
+            <p><strong>Sponsor Type:</strong> {{ form.sponsor_type }}</p>
+
+            <table class="form-table">
+                <tr>
+                    <td width="30%"><strong>Magaca</strong></td>
+                    <td>{{ form.sponsor_name }}</td>
+                </tr>
+                <tr>
+                    <td><strong>ID Number</strong></td>
+                    <td>{{ form.sponsor_id }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Tellphone</strong></td>
+                    <td>{{ form.sponsor_phone }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Contact Number</strong></td>
+                    <td>{{ form.sponsor_contact }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Address</strong></td>
+                    <td>{{ form.sponsor_address }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">C. XUBNAHA (MEMBERS)</div>
+            <button type="button" class="add-member-btn" id="add-member-btn">+ Add Member</button>
+            <table class="form-table" id="members-table">
+                <thead>
+                    <tr>
+                        <th width="5%">No</th>
+                        <th width="25%">Magaca</th>
+                        <th width="15%">Jinsiyadda</th>
+                        <th width="15%">Tellphone</th>
+                        <th width="15%">ID</th>
+                        <th width="10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ formset.management_form }}
+                    {% for member_form in formset %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ member_form.name }}</td>
+                        <td>{{ member_form.nationality }}</td>
+                        <td>{{ member_form.phone }}</td>
+                        <td>{{ member_form.id_number }}</td>
+                        <td>
+                            {% if forloop.counter > 1 %}
+                            <button type="button" class="remove-member-btn">Remove</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">D. OGEYSIIS (NOTICE)</div>
+            <p style="text-align: justify;">Form-kan wuxuu ka kobban yahay Laba (2) Bog oo muhtiim ah in la dhamaystiro
+                buuxintisa kadibna uu saxeexo wakilika maherada iyo taliyaha degmada.</p>
+
+            <div style="margin-top: 30px;">
+                <div class="official-stamp">
+                    OFFICIAL STAMP<br><br>
+                    Date: {% now "d/m/Y" %}
+                </div>
+
+                <div style="float: left;">
+                    <span class="signature-line"></span>
+                    <span class="signature-label">Wakilka Saxiixa</span>
+                </div>
+
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Address:</strong> Hargeisa Somaliland, Sha'ab Area</p>
+            <p><strong>Email:</strong> info@slimmigration.com &nbsp;&nbsp; <strong>Line:</strong> 523961 &nbsp;&nbsp;
+                <strong>Web:</strong> www.slimmigration.com</p>
+        </div>
+
+        <div class="btn-container">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'kafiilka_form_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addMemberBtn = document.getElementById('add-member-btn');
+        const membersTable = document.getElementById('members-table').getElementsByTagName('tbody')[0];
+        const totalForms = document.getElementById('id_members-TOTAL_FORMS');
+        const formPrefix = 'members-';
+        let formCount = parseInt(totalForms.value);
+
+        addMemberBtn.addEventListener('click', function () {
+            const newRow = document.createElement('tr');
+            const newFormIndex = formCount++;
+
+            newRow.innerHTML = `
+            <td>${formCount}</td>
+            <td><input type="text" name="${formPrefix}${newFormIndex}-name" class="form-control" required></td>
+            <td><input type="text" name="${formPrefix}${newFormIndex}-nationality" class="form-control" required></td>
+            <td><input type="text" name="${formPrefix}${newFormIndex}-phone" class="form-control" required></td>
+            <td><input type="text" name="${formPrefix}${newFormIndex}-id_number" class="form-control" required></td>
+            <td><button type="button" class="remove-member-btn">Remove</button></td>
+        `;
+
+            membersTable.appendChild(newRow);
+            totalForms.value = formCount;
+
+            // Add event listener to the new remove button
+            newRow.querySelector('.remove-member-btn').addEventListener('click', function () {
+                membersTable.removeChild(newRow);
+                formCount--;
+                totalForms.value = formCount;
+                updateRowNumbers();
+            });
+        });
+
+        // Add event listeners to existing remove buttons
+        document.querySelectorAll('.remove-member-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const row = this.closest('tr');
+                membersTable.removeChild(row);
+                formCount--;
+                totalForms.value = formCount;
+                updateRowNumbers();
+            });
+        });
+
+        function updateRowNumbers() {
+            const rows = membersTable.getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].cells[0].textContent = i + 1;
+            }
+        }
+    });
+</script>
+{% endblock %}

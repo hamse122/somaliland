@@ -1,0 +1,421 @@
+﻿{% block content %}
+<style>
+    @page {
+        size: A4;
+        margin: 0.5cm;
+    }
+
+    @media print {
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 10pt;
+            line-height: 1.3;
+        }
+
+        .no-print {
+            display: none !important;
+        }
+
+        .form-container {
+            border: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .btn-container {
+            display: none !important;
+        }
+    }
+
+    body {
+        font-family: "Times New Roman", serif;
+        background-color: #f8f9fa;
+    }
+
+    .form-container {
+        width: 210mm;
+        min-height: 297mm;
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 15mm;
+        margin: 0 auto;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .form-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #000;
+    }
+
+    .logo {
+        height: 128px;
+        margin-right: -48px;
+    }
+
+    .header-text {
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .form-header h1 {
+        font-size: 18pt;
+        font-weight: bold;
+        margin: 3px 0;
+        text-transform: uppercase;
+    }
+
+    .form-header h2 {
+        font-size: 14pt;
+        font-weight: bold;
+        margin: 3px 0;
+    }
+
+    .form-header p {
+        margin: 3px 0;
+        font-size: 10pt;
+    }
+
+    .photo-box {
+        width: 100px;
+        height: 120px;
+        border: 1px solid #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .photo-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .section-title {
+        font-size: 12pt;
+        font-weight: bold;
+        margin: 15px 0 5px 0;
+        padding-bottom: 3px;
+        border-bottom: 1px solid #000;
+        text-align: center;
+    }
+
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+        font-size: 10pt;
+    }
+
+    .form-table th,
+    .form-table td {
+        border: 1px solid #000;
+        padding: 5px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .form-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 8pt;
+        margin-top: 15px;
+        padding-top: 5px;
+        border-top: 1px solid #000;
+    }
+
+    .watermark {
+        position: absolute;
+        opacity: 0.05;
+        font-size: 80pt;
+        font-weight: bold;
+        color: #006b4d;
+        transform: rotate(-45deg);
+        left: 30px;
+        top: 200px;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .checkbox {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 1px solid #000;
+        margin-right: 5px;
+        text-align: center;
+        line-height: 14px;
+        font-size: 9pt;
+        vertical-align: middle;
+    }
+
+    .checked {
+        background-color: #000;
+        color: white;
+    }
+
+    .child-photo {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+    }
+
+    .btn-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .btn {
+        padding: 8px 20px;
+        font-size: 11pt;
+        margin: 0 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #006b4d;
+        color: white;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .official-section {
+        margin-top: 20px;
+    }
+
+    .official-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 10pt;
+    }
+
+    .official-table td {
+        border: 1px solid #000;
+        padding: 5px;
+    }
+
+    .notice-section {
+        font-size: 10pt;
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #000;
+        margin: 10px 0;
+        background-color: #f8f9fa;
+    }
+</style>
+
+<div class="form-container">
+    <div class="watermark">OFFICIAL</div>
+
+    <div class="form-header">
+        <img src="https://i.postimg.cc/85ztSqFB/Flag-of-the-Somaliland-Immigration-and-Border-Control-svg.png"
+            alt="SIBG Logo" class="logo">
+        <div class="header-text">
+            <h1>REPUBLIC OF SOMALILAND</h1>
+            <h2>IMMIGRATION TRAVEL DOCUMENT</h2>
+            <p><strong>XAFIISKA GOBOLKA M/JEEX</strong> Date: {% now "Y-m-d" %}</p>
+            <h3>FOOMKA JOGGITAANKA</h3>
+        </div>
+        <div class="photo-box">
+            {% if document.photo %}
+            <img src="{{ document.photo.url }}" alt="Applicant Photo">
+            {% else %}
+            [Photograph]
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="two-col">
+        <table class="form-table">
+            <tr>
+                <th colspan="2" class="text-center">Personal Information</th>
+            </tr>
+            <tr>
+                <td width="40%"><strong>Magaca oo Afaran</strong></td>
+                <td>{{ document.full_name|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Magaca Hooyada</strong></td>
+                <td>{{ document.mother_name|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Tariikhda Dhalasho</strong></td>
+                <td>{{ document.birth_date|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Goobta Dhalasho</strong></td>
+                <td>{{ document.birth_place|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Agoonsi Lambar</strong></td>
+                <td>{{ document.identification_number|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Gobolka</strong></td>
+                <td>{{ document.region|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>M/Goobta Shaqo</strong></td>
+                <td>{{ document.workplace|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Magaca Wakiilka</strong></td>
+                <td>{{ document.sponsor_name|default:"-" }}</td>
+            </tr>
+        </table>
+
+        <table class="form-table">
+            <tr>
+                <th colspan="2" class="text-center">Contact Information</th>
+            </tr>
+            <tr>
+                <td width="40%"><strong>Card-ka Muwadinka</strong></td>
+                <td>{{ document.citizen_card|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Telephone Lambar</strong></td>
+                <td>{{ document.phone_number|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Jinsiyadda</strong></td>
+                <td>{{ document.nationality|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Degmada</strong></td>
+                <td>{{ document.district|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Nooca Shaqo</strong></td>
+                <td>{{ document.job_type|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Liisan Lambar</strong></td>
+                <td>{{ document.license_number|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Contact Number</strong></td>
+                <td>{{ document.contact_number|default:"-" }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-title">Magaca Ku-tirsanayasha Ka Yar 14 Jir</div>
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th width="5%">No</th>
+                <th width="30%">Magaca</th>
+                <th width="20%">T/Dhalashada</th>
+                <th width="25%">G/Dhalashada</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for child in document.children.all %}
+            <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td>{{ child.name|default:"-" }}</td>
+                <td>{{ child.birth_date|default:"-" }}</td>
+                <td>{{ child.birth_place|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No children registered</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="form-section">
+        <div class="section-title">D. OGEYSIIS (NOTICE)</div>
+        <div class="notice-section">
+            F.G: Maclumaadka Formka waa in uu dhamaystimaado.
+        </div>
+    </div>
+
+    <div class="official-section">
+        <div class="section-title">Hawl wadeenka Ciidanka Socdaalka kaliya:</div>
+        <table class="official-table">
+            <tr>
+                <td width="40%"><h3>Tariikhda la Buuxiyay:</h3> {{ document.filled_date|default:"-" }}</td>
+                <td width="80%">
+                    <h3>Noocyada Lifaaqyada:</h3>
+                    <span class="checkbox {% if document.has_notayo %}checked{% endif %}">✓</span> Notaayo
+                    <span class="checkbox {% if document.has_sponsor_id %}checked{% endif %}">✓</span> ID-ga Kafiilka
+                    <span class="checkbox {% if document.has_damaged_id %}checked{% endif %}">✓</span> Aqoonsiga
+                    Ladamiintaha
+                    <span class="checkbox {% if document.has_company_license %}checked{% endif %}">✓</span> Liisanka
+                    Shirkada
+                    <span class="checkbox {% if document.has_other_documents %}checked{% endif %}">✓</span> Hadii wax
+                    kale jiro
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Marxalada uu Marayo:</strong></td>
+                <td>
+                    <span class="checkbox {% if document.status == 'filled' %}checked{% endif %}">✓</span> Waa la
+                    Buxiyay
+                    <span class="checkbox {% if document.status == 'approved' %}checked{% endif %}">✓</span> Waa la
+                    Ogolaaday
+                    <span class="checkbox {% if document.status == 'printed' %}checked{% endif %}">✓</span> Waa la
+                    Daabacay
+                </td>
+            </tr>
+            <tr>
+                <td><strong>FaahFahin Gaar Ah:</strong></td>
+                <td>{{ document.immigration_officer_notes|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Card Number:</strong> {{ document.card_number|default:"-" }}</td>
+                <td><strong>Signature:</strong> {{ document.officer_signature|default:"-" }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>Address: Hargeisa Somaliland, Sha'ab Area</p>
+        <p>Email: info@slimmigration.com | Line: 523961 | Web: www.slimmigration.com</p>
+    </div>
+</div>
+
+<div class="btn-container no-print">
+    <a href="{% url 'travel_document_edit' document.pk %}" class="btn btn-warning">
+        <i class="fas fa-edit"></i> Edit Document
+    </a>
+    <a href="{% url 'travel_document_list' %}" class="btn btn-secondary">
+        <i class="fas fa-list"></i> Back to List
+    </a>
+    <button onclick="window.print()" class="btn btn-primary">
+        <i class="fas fa-print"></i> Print Document
+    </button>
+</div>
+{% endblock %}

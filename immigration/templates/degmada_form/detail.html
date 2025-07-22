@@ -1,0 +1,147 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-header">
+    <h1>REPUBLIC OF SOMALILAND</h1>
+    <h2>Form-ka Degmada</h2>
+    <p>REF: {{ form.reference|default:"-" }} DATE: {% if form.date %}{{ form.date }}{% else %}-{% endif %}</p>
+    <p><strong>GOBOLKA:</strong> {{ form.gobolka|default:"-" }} <strong>DEGMADA:</strong> {{ form.degmada|default:"-" }}</p>
+</div>
+
+<div class="form-section">
+    <div class="section-title">A. MAHERADDA (COMPANY, ORGANIZATION)</div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Magaca Maheradda:</strong> {{ form.company_name|default:"-" }}</p>
+            <p><strong>Lilsanka Maheradda:</strong> {{ form.company_license|default:"-" }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Xiliga La'asasay:</strong> {{ form.establishment_period|default:"-" }}</p>
+            <p><strong>Shaqalaha ka Hawlgala:</strong> {{ form.working_employees|default:"-" }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Gobolka:</strong> {{ form.company_region|default:"-" }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Degmada:</strong> {{ form.company_district|default:"-" }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="form-section">
+    <div class="section-title">B. WAKILL(SPONSER) SHAGSI</div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Magaca:</strong> {{ form.sponsor_name|default:"-" }}</p>
+            <p><strong>ID Number:</strong> {{ form.sponsor_id|default:"-" }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Tellphone:</strong> {{ form.sponsor_phone|default:"-" }}</p>
+            <p><strong>Contact Number:</strong> {{ form.sponsor_contact|default:"-" }}</p>
+        </div>
+    </div>
+    <p><strong>Address:</strong> {{ form.sponsor_address|default:"-" }}</p>
+</div>
+
+<div class="form-section">
+    <div class="section-title">C. Macluumaadka Dadka La'Ogalaaday</div>
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Magaca</th>
+                <th>Jinsiyadda</th>
+                <th>T/Dhalasho</th>
+                <th>Telephone</th>
+                <th>Photo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in form.members.all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ member.name|default:"-" }}</td>
+                <td>{{ member.nationality|default:"-" }}</td>
+                <td>{% if member.birth_date %}{{ member.birth_date }}{% else %}-{% endif %}</td>
+                <td>{{ member.phone|default:"-" }}</td>
+                <td>
+                    {% if member.photo %}
+                    <img src="{{ member.photo.url }}" width="50" height="50">
+                    {% else %}-{% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No members found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="form-section">
+    <div class="section-title">Photographs Section</div>
+    <div class="text-center">
+        {% for member in form.members.all|slice:":8" %}
+        <div class="photo-box">
+            {% if member.photo %}
+            <img src="{{ member.photo.url }}" width="100%" height="100%">
+            {% endif %}
+            <div class="photo-label">Photograph 2x2 inch</div>
+        </div>
+        {% endfor %}
+        {% for i in form.members.all|length|add:"-8"|get_range %}
+        <div class="photo-box">
+            <div class="photo-label">Photograph 2x2 inch</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="form-section">
+    <div class="section-title">Balan Qaad (Pledge)</div>
+    <p>Anigoo ah milkiilaha / milkiilayaasha maheradda kor ku xusan ee Qodobka (A) waxaan balan qaadaya in dadka ku qoran Qodobka (C) aan mas'uul ka yahay, haddii loo baahdana aan keeni doono xarunta ciidanka socdaalka. Wuxuuna waajib igu yahay in muddo ah lix (6) bilood aan igu diyaar ninyo Basaasnimo, Jidgooyo, Qaxooti, Jiritaan iyo kuwo dhameystiran waayana waxba kama qabto in laga guto waana sharciga ciidanka socdaalka.</p>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Magaca iyo Saxeexa Balan Qaadaha:</strong> {{ form.pledge_name|default:"-" }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Signature:</strong> {{ form.pledge_signature|default:"-" }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="form-section">
+    <div class="section-title">Hawadeenka Ciidanka Socdaalka kaliya:</div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Tariikhda la Buuxiyay:</strong> {% if form.filled_date %}{{ form.filled_date }}{% else %}-{% endif %}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Noocyada Lifaaqyada:</strong> {{ form.attachment_types|default:"-" }}</p>
+        </div>
+    </div>
+    <p><strong>Faahfaahin Gaar Ah:</strong> {{ form.special_notes|default:"-" }}</p>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Magaca iyo Saxeexa Taliyaha Degmada:</strong> {{ form.district_leader_name|default:"-" }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Signature:</strong> {{ form.district_leader_signature|default:"-" }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Address: Hargeisa Somaliland, Sha'ab Area</p>
+    <p>Email: info@slimmigration.com</p>
+    <p>Line: 523961 | Web: www.slimmigration.com</p>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'degmada_form_edit' form.pk %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'degmada_form_list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+{% endblock %}

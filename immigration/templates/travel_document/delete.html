@@ -1,0 +1,19 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Delete Travel Document</h1>
+
+<div class="alert alert-danger">
+    <p>Are you sure you want to delete this document?</p>
+    <p><strong>Document Number:</strong> {{ document.document_number }}</p>
+    <p><strong>Full Name:</strong> {{ document.full_name }}</p>
+    <p><strong>ID Number:</strong> {{ document.identification_number }}</p>
+    <p><strong>Date:</strong> {{ document.date }}</p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'travel_document_detail' document.pk %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

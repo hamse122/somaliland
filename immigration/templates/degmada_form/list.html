@@ -1,0 +1,37 @@
+﻿{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Degmada Forms</h1>
+<a href="{% url 'degmada_form_create' %}" class="btn btn-primary mb-3">Create New Form</a>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Date</th>
+                <th>Company Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for form in forms %}
+            <tr>
+                <td>{{ form.reference }}</td>
+                <td>{{ form.date }}</td>
+                <td>{{ form.company_name }}</td>
+                <td>
+                    <a href="{% url 'degmada_form_detail' form.pk %}" class="btn btn-sm btn-info">View</a>
+                    <a href="{% url 'degmada_form_edit' form.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'degmada_form_delete' form.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No forms found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

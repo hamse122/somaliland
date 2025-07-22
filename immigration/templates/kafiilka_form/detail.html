@@ -1,0 +1,377 @@
+﻿{% block content %}
+<style>
+    @page {
+        size: A4;
+        margin: 0.5cm;
+    }
+    @media print {
+        body {
+            font-family: "Times New Roman", serif;
+            font-size: 10pt;
+            line-height: 1.3;
+        }
+        .no-print {
+            display: none !important;
+        }
+        .form-container {
+            border: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    body {
+        font-family: "Times New Roman", serif;
+        background-color: #f8f9fa;
+    }
+    .form-container {
+        width: 190mm;
+        min-height: 270mm;
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 10mm;
+        margin: 0 auto;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        position: relative;
+        box-sizing: border-box;
+    }
+    .form-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #000;
+    }
+    .logo {
+        height: 128px;
+        margin-right: -48px;
+    }
+    
+    .header-text {
+        flex-grow: 0;
+        text-align: center;
+    }
+    .form-header h1 {
+        font-size: 18pt;
+        font-weight: bold;
+        margin: 3px 0;
+        text-transform: uppercase;
+    }
+    .form-header h2 {
+        font-size: 12pt;
+        font-weight: bold;
+        margin: 3px 0;
+    }
+    .form-header p {
+        margin: 3px 0;
+        font-size: 10pt;
+    }
+    .section-title {
+        font-size: 11pt;
+        font-weight: bold;
+        margin: 10px 0 5px 0;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #000;
+    }
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+        border: 1px solid #000;
+        font-size: 10pt;
+    }
+    .form-table th, .form-table td {
+        border: 1px solid #000;
+        padding: 5px;
+        text-align: left;
+        vertical-align: top;
+    }
+    .form-table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
+    .footer {
+        text-align: center;
+        font-size: 8pt;
+        margin-top: 15px;
+        padding-top: 5px;
+        border-top: 1px solid #000;
+    }
+    .watermark {
+        position: absolute;
+        opacity: 0.05;
+        font-size: 80pt;
+        font-weight: bold;
+        color: #006b4d;
+        transform: rotate(-45deg);
+        left: 30px;
+        top: 200px;
+        z-index: -1;
+        pointer-events: none;
+    }
+    .official-stamp {
+        float: right;
+        height: 70px;
+        border: 1px solid #000;
+        text-align: center;
+        padding: 3px;
+        font-size: 8pt;
+        margin-left: 5px;
+    }
+    .signature-line {
+        border-bottom: 1px solid #000;
+        width: 150px;
+        display: inline-block;
+        margin-top: 20px;
+    }
+    .signature-label {
+        font-size: 8pt;
+        text-align: center;
+        display: block;
+    }
+    .btn-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .btn {
+        padding: 8px 20px;
+        font-size: 11pt;
+        margin: 0 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .btn i {
+        margin-right: 8px;
+        font-size: 14px;
+    }
+    .btn-primary {
+        background-color: #006b4d;
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #005a43;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .btn-warning:hover {
+        background-color: #e0a800;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .checkbox {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border: 1px solid #000;
+        margin-right: 3px;
+        text-align: center;
+        line-height: 12px;
+        font-size: 8pt;
+    }
+    .checked {
+        background-color: #000;
+        color: white;
+    }
+    .member-photo {
+        width: 30px;
+        height: 30px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+    }
+    .compact-row {
+        margin-bottom: 5px;
+    }
+    .notice-section {
+        background-color: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 10px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    .notice-section::before {
+        content: "⚠️";
+        margin-right: 10px;
+        font-size: 16px;
+    }
+</style>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="container mt-3">
+    <div class="form-container">
+        <div class="watermark">2025</div>
+        
+        <div class="form-header">
+            <img src="https://i.postimg.cc/85ztSqFB/Flag-of-the-Somaliland-Immigration-and-Border-Control-svg.png" alt="SIBG Logo" class="logo">
+            <div class="header-text">
+                <h1>JAMHURIYADDA SOMALILAND</h1>
+                <h1>REPUBLIC OF SOMALILAND</h1>
+                <h2>FORM-KA KAFIILKA</h2>
+                <div class="compact-row">
+                    <strong>REF:</strong> {{ form.reference|default:"________" }} &nbsp; <strong>DATE:</strong> {% now "d/m/Y" %}
+                </div>
+                <div class="compact-row">
+                    <strong>GOBOLKA:</strong> {{ form.gobolka|default:"________" }} &nbsp; <strong>DEGMADA:</strong> {{ form.degmada|default:"________" }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">A. MAHERADDA (COMPANY, ORGANIZATION)</div>
+            <table class="form-table">
+                <tr>
+                    <td width="25%"><strong>Magaca Maheradda</strong></td>
+                    <td>{{ form.company_name|default:"________" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Litsanka Maheradda</strong></td>
+                    <td>{{ form.company_license|default:"________" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Xiliga La'asasay</strong></td>
+                    <td>{{ form.establishment_period|default:"________" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Shaqalaha ka Hawlgala</strong></td>
+                    <td>{{ form.working_employees|default:"________" }}</td>
+                </tr>
+                <tr>
+                    <td width="25%"><strong>Gobolka/Degmada</strong></td>
+                    <td>
+                        <strong>Gobolka:</strong> {{ form.company_region|default:"________" }} &nbsp;
+                        <strong>Degmada:</strong> {{ form.company_district|default:"________" }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">B. WAKILI (SPONSER)</div>
+            <div class="compact-row">
+                <strong>Sponsor Type:</strong> 
+                <span class="checkbox {% if form.sponsor_type == 'SHASI' %}checked{% endif %}">{% if form.sponsor_type == 'SHASI' %}✓{% endif %}</span> SHASI
+                <span class="checkbox {% if form.sponsor_type == 'WADAR' %}checked{% endif %}" style="margin-left: 10px;">{% if form.sponsor_type == 'WADAR' %}✓{% endif %}</span> WADAR
+            </div>
+            
+            <table class="form-table">
+                <tr>
+                    <td width="25%"><strong>Magaca</strong></td>
+                    <td>{{ form.sponsor_name|default:"________" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>ID Number</strong></td>
+                    <td>{{ form.sponsor_id|default:"________" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Tellphone</strong></td>
+                    <td>{{ form.sponsor_phone|default:"________" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Contact Number</strong></td>
+                    <td>{{ form.sponsor_contact|default:"________" }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Address</strong></td>
+                    <td>{{ form.sponsor_address|default:"________" }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">C. XUBNAHA (MEMBERS)</div>
+            <table class="form-table">
+                <thead>
+                    <tr>
+                        <th width="5%">No</th>
+                        <th width="25%">Magaca</th>
+                        <th width="15%">Jinsiyadda</th>
+                        <th width="15%">Tellphone</th>
+                        <th width="15%">ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in form.members.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ member.name|default:"________" }}</td>
+                        <td>{{ member.nationality|default:"________" }}</td>
+                        <td>{{ member.phone|default:"________" }}</td>
+                        <td>{{ member.id_number|default:"________" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" style="text-align: center;">No members found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-section">
+            <div class="section-title">D. OGEYSIIS (NOTICE)</div>
+            <div class="notice-section">
+               F.G: Form-kan wuxuu ka kobban yahay Laba (2) Bog oo muhtiim ah in la dhamaystiro buuxintisa kadibna uu saxeexo wakilika maherada iyo taliyaha degmada.
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <div class="official-stamp">
+                    OFFICIAL STAMP<br>
+                    Date: {% now "d/m/Y" %}
+                </div>
+                
+                <div style="float: left;">
+                    <span class="signature-line"></span>
+                    <span class="signature-label">Wakilka Saxiixa</span>
+                </div>
+                
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>Address:</strong> Hargeisa Somaliland, Sha'ab Area</p>
+            <p><strong>Email:</strong> info@slimmigration.com &nbsp; <strong>Line:</strong> 523961 &nbsp; <strong>Web:</strong> www.slimmigration.com</p>
+        </div>
+    </div>
+
+    <div class="btn-container no-print">
+        <button onclick="window.print()" class="btn btn-primary">
+            <i class="fas fa-print"></i> Print Form
+        </button>
+        <a href="{% url 'kafiilka_form_edit' form.pk %}" class="btn btn-warning">
+            <i class="fas fa-edit"></i> Edit
+        </a>
+        <a href="{% url 'kafiilka_form_list' %}" class="btn btn-secondary">
+            <i class="fas fa-list"></i> Back to List
+        </a>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add any necessary JavaScript here
+});
+</script>
+{% endblock %}
