@@ -1,1 +1,1 @@
-web: gunicorn immigration.wsgi --log-file -
+web: gunicorn somaliland_immigration.wsgi --log-file -
