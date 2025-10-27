@@ -1,3 +1,11 @@
 from django.contrib import admin
+from .models import (
+    TravelDocument, TravelDocumentChild,
+    DegmadaForm, DegmadaFormMember,
+    KafiilkaForm, KafiilkaFormMember
+)
 
-# Register your models here.
+# Import enhanced admin
+from .enhanced_admin import *
+
+# Models are already registered in enhanced_admin.py

@@ -1,5 +1,16 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from . import views
+from .api_views import (
+    TravelDocumentViewSet, DegmadaFormViewSet,
+    KafiilkaFormViewSet, StatisticsView, DocumentValidationView
+)
+
+# API Router
+api_router = DefaultRouter()
+api_router.register(r'travel-documents', TravelDocumentViewSet, basename='traveldocument')
+api_router.register(r'degmada-forms', DegmadaFormViewSet, basename='degmadaform')
+api_router.register(r'kafiilka-forms', KafiilkaFormViewSet, basename='kafiilkaform')
 
 urlpatterns = [
     # Home URL
@@ -25,4 +36,9 @@ urlpatterns = [
     path('travel/<int:pk>/', views.travel_document_detail, name='travel_document_detail'),
     path('travel/<int:pk>/edit/', views.travel_document_edit, name='travel_document_edit'),
     path('travel/<int:pk>/delete/', views.travel_document_delete, name='travel_document_delete'),
+    
+    # API URLs
+    path('api/', include(api_router.urls)),
+    path('api/statistics/', StatisticsView.as_view(), name='api-statistics'),
+    path('api/validate-document/', DocumentValidationView.as_view(), name='api-validate-document'),
 ]
